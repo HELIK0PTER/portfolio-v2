@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Github, Linkedin, Mail, Shield } from "lucide-react";
+import { ThemeSelector } from "./theme-selector";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -119,7 +120,8 @@ export function Footer() {
             © {currentYear} Portfolio de Matheus KOPS GUEDES. Tous droits
             réservés. Fait avec ❤️ et Next.js
           </p>
-          <div className="flex space-x-4 pb-4">
+          <div className="flex items-center space-x-4 pb-4">
+            <ThemeSelector />
             <Link href="/admin" className="flex items-center gap-2">
               <Shield />
               <span className="text-muted-foreground hover:text-primary transition-colors">
