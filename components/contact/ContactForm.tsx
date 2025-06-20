@@ -60,7 +60,7 @@ Je suis intéressé(e) par votre service de développement web full stack.
 
 Mon projet concerne :
 - Une application web complète
-- Un site vitrine/e-commerce  
+- Un site vitrine/e-commerce
 - Une API/backend
 - Autre : ___________
 
@@ -177,7 +177,7 @@ Préoccupations spécifiques :
 
 Merci !`,
 
-      "Alternance": `Bonjour,
+      Alternance: `Bonjour,
 
 Je représente [Nom de l'entreprise] et je suis intéressé(e) par votre profil pour une alternance.
 
@@ -194,27 +194,30 @@ Mission proposée :
 
 Nous aimerions échanger avec vous pour discuter de cette opportunité.
 
-Cordialement`
+Cordialement`,
     };
 
-    return templates[serviceName as keyof typeof templates] || `Bonjour,
+    return (
+      templates[serviceName as keyof typeof templates] ||
+      `Bonjour,
 
 Je suis intéressé(e) par votre service "${serviceName}".
 
 [Décrivez votre projet et vos besoins...]
 
-Merci !`;
+Merci !`
+    );
   };
 
   // Effet pour pré-remplir le formulaire selon les paramètres URL
   useEffect(() => {
-    const service = searchParams.get('service');
+    const service = searchParams.get("service");
     if (service) {
       const decodedService = decodeURIComponent(service);
       const messageTemplate = generateMessageTemplate(decodedService);
-      
-      form.setValue('subject', `Demande de devis - ${decodedService}`);
-      form.setValue('message', messageTemplate);
+
+      form.setValue("subject", `${decodedService}`);
+      form.setValue("message", messageTemplate);
     }
   }, [searchParams, form]);
 
@@ -256,7 +259,10 @@ Merci !`;
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex flex-col flex-1">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6 flex flex-col flex-1"
+      >
         <div className="grid gap-4 sm:grid-cols-2">
           <FormField
             control={form.control}

@@ -657,7 +657,7 @@ export default function ParcoursPage() {
           >
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button asChild size="lg">
-                <Link href="/contact?service=Alternance">
+                <Link href="/contact?service=Proposition%20d%27alternance">
                   {`Proposer une alternance`}
                 </Link>
               </Button>
