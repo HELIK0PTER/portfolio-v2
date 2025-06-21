@@ -99,14 +99,15 @@ export default async function HomePage() {
               alt="Profile"
               width={200}
               height={200}
+              priority
               className="rounded-full object-cover w-full h-full"
             />
           </div>
           <h2 className="text-2xl font-bold">Matheus Kops Guedes</h2>
           <div className="text-sm text-gray-400 italic">
-            <Link href="/cv-matheuskopsguedes.pdf" target="_blank">
-              Téléchargez mon CV <span className="text-primary">ici</span>
-            </Link>
+            <a href="/cv-matheuskopsguedes.pdf" target="_blank" rel="noopener noreferrer">
+              {`Téléchargez mon CV `}<span className="text-primary">{`ici`}</span>
+            </a>
           </div>
         </div>
       </section>
