@@ -25,17 +25,10 @@ export function OptimizedImage({
   placeholder,
   blurDataURL,
 }: OptimizedImageProps) {
-  // Utiliser directement les images optimisées pour le profil
-  const getOptimizedSrc = () => {
-    if (src.includes("profile")) {
-      return "/profile-optimized.jpg";
-    }
-    return src;
-  };
 
   return (
     <Image
-      src={getOptimizedSrc()}
+      src={src}
       alt={alt}
       width={width}
       height={height}
