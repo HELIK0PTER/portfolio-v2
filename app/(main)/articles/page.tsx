@@ -11,6 +11,9 @@ import {
 import { getAllArticles, getFeaturedArticles } from "@/lib/articles";
 import { ArticlesFilter } from "@/components/articles";
 
+// Force cette page à être rendue dynamiquement
+export const dynamic = 'force-dynamic';
+
 export default async function ArticlesPage() {
   // Récupération des données côté serveur
   const [articles, featuredArticles] = await Promise.all([

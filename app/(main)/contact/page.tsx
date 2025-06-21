@@ -11,6 +11,9 @@ import {
 import { Mail, MapPin, Phone, Calendar } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
+// Force cette page à être rendue dynamiquement
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "Contact | Matheus Kops Guedes",
   description: "Contactez-moi pour discuter de vos projets et collaborations",

@@ -10,6 +10,9 @@ import {
 import { getAllProjects, getFeaturedProjects } from "@/lib/projects";
 import { ProjectsFilter } from "@/components/projects";
 
+// Force cette page à être rendue dynamiquement
+export const dynamic = 'force-dynamic';
+
 export default async function ProjectsPage() {
   // Récupération des données côté serveur
   const [projects, featuredProjects] = await Promise.all([

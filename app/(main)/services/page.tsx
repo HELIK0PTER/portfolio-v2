@@ -105,6 +105,9 @@ const defaultServices = [
   },
 ];
 
+// Force cette page à être rendue dynamiquement
+export const dynamic = 'force-dynamic';
+
 export default async function ServicesPage() {
   let services = await getServices();
 
