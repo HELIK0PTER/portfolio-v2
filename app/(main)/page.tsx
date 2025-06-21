@@ -95,7 +95,7 @@ export default async function HomePage() {
         <div className="mx-auto flex flex-col items-center justify-center gap-4">
           <div className="aspect-square w-50 h-50">
             <OptimizedImage
-              src="/profile.jpg"
+              src="/profile-optimized.webp"
               alt="Matheus Kops Guedes - Développeur Full Stack"
               width={200}
               height={200}
