@@ -16,8 +16,8 @@ import {
   Award,
   Book,
 } from "lucide-react";
-import Image from "next/image";
 import FeaturedProjects from "@/components/home/FeaturedProjects";
+import { OptimizedImage } from "@/components/ui/OptimizedImage";
 
 export default async function HomePage() {
   const stats = [
@@ -94,13 +94,17 @@ export default async function HomePage() {
         {/* Image et nom */}
         <div className="mx-auto flex flex-col items-center justify-center gap-4">
           <div className="aspect-square w-50 h-50">
-            <Image
+            <OptimizedImage
               src="/profile.jpg"
-              alt="Profile"
+              alt="Matheus Kops Guedes - Développeur Full Stack"
               width={200}
               height={200}
               priority
+              quality={90}
+              sizes="(max-width: 768px) 150px, 200px"
               className="rounded-full object-cover w-full h-full"
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyLli2O4/VBz2lkif8AhAjjUdbjDu9HzgNJ7YZQKtSqkjHI//Z"
             />
           </div>
           <h2 className="text-2xl font-bold">Matheus Kops Guedes</h2>

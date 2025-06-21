@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
@@ -73,6 +74,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" suppressHydrationWarning>
+      <head>
+        {/* Preload de l'image optimisée avec support WebP */}
+        <link
+          rel="preload"
+          href="/profile-optimized.webp"
+          as="image"
+          type="image/webp"
+        />
+        <link
+          rel="preload"
+          href="/profile-optimized.jpg"
+          as="image"
+          type="image/jpeg"
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          rel="dns-prefetch"
+          href="https://aws-0-eu-west-3.pooler.supabase.com"
+        />
+      </head>
       <body
         className={`${GeistSans.variable} ${GeistMono.variable} font-sans antialiased w-full bg-background`}
         cz-shortcut-listen="true"
