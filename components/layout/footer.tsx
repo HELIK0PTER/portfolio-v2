@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Github, Linkedin, Mail, Shield } from "lucide-react";
-import { ThemeSelector } from "./theme-selector";
+import ThemeSelector from "./theme-selector";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();

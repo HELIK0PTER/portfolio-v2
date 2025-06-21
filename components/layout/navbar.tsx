@@ -9,6 +9,7 @@ import { ThemeToggle } from "./theme-toggle";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import ThemeSelector from "./theme-selector";
 
 const navigation = [
   { name: "Accueil", href: "/" },
@@ -70,11 +71,13 @@ export function Navbar() {
 
         {/* Actions Desktop */}
         <div className="hidden lg:flex items-center space-x-4">
+          <ThemeSelector />
           <ThemeToggle />
         </div>
 
         {/* Menu Mobile */}
         <div className="flex lg:hidden items-center space-x-2">
+          <ThemeSelector />
           <ThemeToggle />
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
