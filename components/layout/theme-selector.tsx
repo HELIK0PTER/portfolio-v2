@@ -35,9 +35,9 @@ const discoverThemes = async (): Promise<Theme[]> => {
       description: "Thème violet foncé",
     },
     {
-      id: "neo-brutalism",
-      name: "Neo-Brutalism",
-      description: "Thème brutaliste avec des accents colorés",
+      id: "twitter",
+      name: "Twitter",
+      description: "Thème inspiré de Twitter (X)",
     },
   ];
 
@@ -213,7 +213,7 @@ export default function ThemeSelector() {
         >
           <div className="flex flex-col">
             <span className="font-medium">Défaut</span>
-            <span className="text-xs text-muted-foreground">
+            <span className={`text-xs ${currentTheme === "default" ? "" : "text-muted-foreground"}`}>
               Thème par défaut
             </span>
           </div>
@@ -228,7 +228,7 @@ export default function ThemeSelector() {
           >
             <div className="flex flex-col">
               <span className="font-medium">{theme.name}</span>
-              <span className="text-xs text-muted-foreground">
+              <span className={`text-xs ${currentTheme === theme.id ? "" : "text-muted-foreground"}`}>
                 {theme.description}
               </span>
             </div>

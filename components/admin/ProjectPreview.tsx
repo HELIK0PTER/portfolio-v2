@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { ImageReady } from "@/components/ui/ImageReady";
+import { useTheme } from "next-themes";
 
 interface ProjectPreviewProps {
   title: string;
@@ -25,6 +26,7 @@ export function ProjectPreview({
   githubUrl,
   demoUrl,
 }: ProjectPreviewProps) {
+  const { theme } = useTheme();
   return (
     <div className="w-full max-w-2xl mx-auto bg-background rounded-xl shadow-lg overflow-hidden border">
       {/* Image principale */}
@@ -64,8 +66,10 @@ export function ProjectPreview({
         {/* Technologies */}
         {technologies.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-2">
-            {technologies.map((tech, i) => (
+            {theme === "dark" ? technologies.map((tech, i) => (
               <span key={tech + i} className="badge bg-secondary/10 px-2 py-1 rounded text-white">{tech}</span>
+            )) : technologies.map((tech, i) => (
+              <span key={tech + i} className="badge bg-secondary/20 px-2 py-1 rounded text-black">{tech}</span>
             ))}
           </div>
         )}

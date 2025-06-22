@@ -62,7 +62,7 @@ export default function ProjectCard({
             <Badge className="bg-primary/90 backdrop-blur-sm">⭐ Vedette</Badge>
           )}
           {showCategory && (
-            <Badge variant="outline" className="backdrop-blur-sm bg-background/50">
+            <Badge variant="outline" className="bg-background/80">
               {project.category}
             </Badge>
           )}
@@ -72,7 +72,6 @@ export default function ProjectCard({
           {showStatus && (
             <Badge
               variant={project.status === "Terminé" ? "default" : "secondary"}
-              className="backdrop-blur-sm"
             >
               {project.status}
             </Badge>

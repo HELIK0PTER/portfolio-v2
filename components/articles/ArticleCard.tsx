@@ -57,7 +57,7 @@ export default function ArticleCard({
 
   return (
     <Card
-      className={`pt-0 group overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300 ${
+      className={`pt-0 group overflow-hidden border-1 shadow-md hover:shadow-lg transition-all duration-300 ${
         isFeatured ? "shadow-lg hover:shadow-xl" : ""
       } ${className}`}
     >
@@ -78,7 +78,7 @@ export default function ArticleCard({
             <Badge className="bg-primary/90 backdrop-blur-sm">⭐ Vedette</Badge>
           )}
           {showCategory && (
-            <Badge variant="outline" className="backdrop-blur-sm bg-background/50">
+            <Badge variant="outline" className="bg-background/80">
               {article.category}
             </Badge>
           )}
