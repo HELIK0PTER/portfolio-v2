@@ -9,11 +9,6 @@ import { Separator } from "@/components/ui/separator";
 import { getArticleBySlug } from "@/lib/articles";
 import { prisma } from "@/lib/prisma";
 
-// Configuration de revalidation
-export const revalidate = 3600; // Revalidation toutes les heures
-export const dynamic = 'force-static'; // Force la génération statique
-export const dynamicParams = true; // Permet la génération de nouveaux paramètres
-
 interface ArticlePageProps {
   params: Promise<{
     slug: string;
