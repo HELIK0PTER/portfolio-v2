@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -37,6 +38,12 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     const featured = formData.get("featured") === "true";
     const isPublished = formData.get("isPublished") === "true";
     
+    // Récupérer l'ancien slug pour la revalidation
+    const existingProject = await prisma.project.findUnique({
+      where: { id },
+      select: { slug: true }
+    });
+
     // Mise à jour du projet
     await prisma.project.update({
       where: { id },
@@ -61,6 +68,21 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
         isPublished,
       },
     });
+
+    // Revalidation des pages concernées
+    revalidatePath("/projects"); // Page de liste des projets
+    revalidatePath("/"); // Page d'accueil (projets en vedette)
+    
+    // Revalider l'ancienne et la nouvelle page du projet si le slug a changé
+    if (existingProject?.slug) {
+      revalidatePath(`/projects/${existingProject.slug}`);
+    }
+    if (slug && slug !== existingProject?.slug) {
+      revalidatePath(`/projects/${slug}`);
+    }
+    
+    // Revalider par tag pour toutes les pages de projets
+    revalidateTag("projects");
     
     return new Response(JSON.stringify({ success: true }), {
       status: 200,

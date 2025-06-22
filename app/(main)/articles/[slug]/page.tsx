@@ -9,6 +9,11 @@ import { Separator } from "@/components/ui/separator";
 import { getArticleBySlug } from "@/lib/articles";
 import { prisma } from "@/lib/prisma";
 
+// Configuration de revalidation
+export const revalidate = 3600; // Revalidation toutes les heures
+export const dynamic = 'force-static'; // Force la génération statique
+export const dynamicParams = true; // Permet la génération de nouveaux paramètres
+
 interface ArticlePageProps {
   params: Promise<{
     slug: string;
@@ -177,4 +182,21 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       </div>
     </div>
   );
+}
+
+export async function generateStaticParams() {
+  try {
+    // Récupérer tous les slugs des articles publiés pour la génération statique
+    const articles = await prisma.article.findMany({
+      where: { isPublished: true },
+      select: { slug: true },
+    });
+    
+    return articles.map((article) => ({
+      slug: article.slug,
+    }));
+  } catch (error) {
+    console.error('Erreur lors de la génération des paramètres statiques:', error);
+    return [];
+  }
 }

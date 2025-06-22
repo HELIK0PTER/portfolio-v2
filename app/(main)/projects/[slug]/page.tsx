@@ -22,6 +22,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { getProjectBySlug, getOtherProjects } from "@/lib/projects";
+import { prisma } from "@/lib/prisma";
 import Image from "next/image";
 import { ImageReady } from "@/components/ui/ImageReady";
 
@@ -403,8 +404,24 @@ export default async function ProjectDetailPage({
   );
 }
 
+// Configuration de revalidation
+export const revalidate = 3600; // Revalidation toutes les heures
+export const dynamic = 'force-static'; // Force la génération statique
+export const dynamicParams = true; // Permet la génération de nouveaux paramètres
+
 export async function generateStaticParams() {
-  // Note: En production, vous pourriez vouloir récupérer tous les slugs depuis la base de données
-  // Pour l'instant, on retourne un tableau vide et Next.js générera les pages à la demande
-  return [];
+  try {
+    // Récupérer tous les slugs des projets publiés pour la génération statique
+    const projects = await prisma.project.findMany({
+      where: { isPublished: true },
+      select: { slug: true },
+    });
+    
+    return projects.map((project) => ({
+      slug: project.slug,
+    }));
+  } catch (error) {
+    console.error('Erreur lors de la génération des paramètres statiques:', error);
+    return [];
+  }
 }

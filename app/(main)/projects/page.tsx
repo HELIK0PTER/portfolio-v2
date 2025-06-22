@@ -8,7 +8,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { getAllProjects, getFeaturedProjects } from "@/lib/projects";
-import { ProjectsFilter } from "@/components/projects";
+import ProjectsFilter from "@/components/projects/ProjectsFilter";
 
 export default async function ProjectsPage() {
   // Récupération des données côté serveur

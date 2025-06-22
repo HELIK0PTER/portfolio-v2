@@ -17,6 +17,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getArticleById } from "@/lib/articles";
+import { revalidatePath, revalidateTag } from "next/cache";
 import Image from "next/image";
 import { MarkdownRenderer } from "@/components/ui/MarkdownRenderer";
 
@@ -47,13 +48,32 @@ export default async function AdminArticlePage({
     "use server";
 
     try {
+      // Récupérer le slug avant suppression pour la revalidation
+      const articleToDelete = await prisma.article.findUnique({
+        where: { id },
+        select: { slug: true }
+      });
+
       await prisma.article.delete({
         where: { id },
       });
+
+      // Revalidation des pages concernées
+      revalidatePath("/articles"); // Page de liste des articles
+      revalidatePath("/"); // Page d'accueil (articles en vedette)
+      
+      if (articleToDelete?.slug) {
+        revalidatePath(`/articles/${articleToDelete.slug}`); // Page de l'article supprimé
+      }
+      
+      // Revalider par tag pour toutes les pages d'articles
+      revalidateTag("articles");
+
     } catch (error) {
       console.error("Erreur lors de la suppression de l'article:", error);
       throw new Error("Erreur lors de la suppression de l'article");
     }
+    
     redirect("/admin/articles");
   }
 

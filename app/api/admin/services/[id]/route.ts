@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function PUT(
   request: NextRequest,
@@ -37,6 +38,13 @@ export async function PUT(
       },
     });
 
+    // Revalidation des pages concernées
+    revalidatePath("/services"); // Page de liste des services
+    revalidatePath("/"); // Page d'accueil
+    
+    // Revalider par tag pour toutes les pages de services
+    revalidateTag("services");
+
     return NextResponse.json(service);
   } catch (error) {
     console.error("Erreur lors de la mise à jour du service:", error);
@@ -68,6 +76,13 @@ export async function PATCH(
       data,
     });
 
+    // Revalidation des pages concernées
+    revalidatePath("/services"); // Page de liste des services
+    revalidatePath("/"); // Page d'accueil
+    
+    // Revalider par tag pour toutes les pages de services
+    revalidateTag("services");
+
     return NextResponse.json(service);
   } catch (error) {
     console.error("Erreur lors de la mise à jour du service:", error);
@@ -96,6 +111,13 @@ export async function DELETE(
     await prisma.service.delete({
       where: { id },
     });
+
+    // Revalidation des pages concernées
+    revalidatePath("/services"); // Page de liste des services
+    revalidatePath("/"); // Page d'accueil
+    
+    // Revalider par tag pour toutes les pages de services
+    revalidateTag("services");
 
     return NextResponse.json({ message: "Service supprimé avec succès" });
   } catch (error) {

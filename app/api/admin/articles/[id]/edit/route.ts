@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function POST(
   req: NextRequest,
@@ -98,6 +99,21 @@ export async function POST(
         updatedAt: new Date(),
       },
     });
+
+    // Revalidation des pages concernées
+    revalidatePath("/articles"); // Page de liste des articles
+    revalidatePath("/"); // Page d'accueil (articles en vedette)
+    
+    // Revalider l'ancienne et la nouvelle page de l'article si le slug a changé
+    if (existingArticle?.slug) {
+      revalidatePath(`/articles/${existingArticle.slug}`);
+    }
+    if (slug && slug !== existingArticle?.slug) {
+      revalidatePath(`/articles/${slug}`);
+    }
+    
+    // Revalider par tag pour toutes les pages d'articles
+    revalidateTag("articles");
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,

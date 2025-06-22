@@ -26,6 +26,9 @@ export const metadata: Metadata = {
     "Découvrez mes services de développement web, création d'API, optimisation et consulting technique.",
 };
 
+// Configuration de revalidation
+export const revalidate = 3600; // Revalidation toutes les heures
+
 async function getServices() {
   return await prisma.service.findMany({
     where: { isPublished: true },

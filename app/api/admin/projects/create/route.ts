@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function POST(req: NextRequest) {
   try {
@@ -59,6 +60,14 @@ export async function POST(req: NextRequest) {
         isPublished,
       },
     });
+
+    // Revalidation des pages concernées
+    revalidatePath("/projects"); // Page de liste des projets
+    revalidatePath("/"); // Page d'accueil (projets en vedette)
+    revalidatePath(`/projects/${slug}`); // Page du nouveau projet
+    
+    // Revalider par tag pour toutes les pages de projets
+    revalidateTag("projects");
     
     return new Response(JSON.stringify({ id: project.id }), {
       status: 200,
