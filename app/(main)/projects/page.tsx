@@ -10,6 +10,11 @@ import {
 import { getAllProjects, getFeaturedProjects } from "@/lib/projects";
 import ProjectsFilter from "@/components/projects/ProjectsFilter";
 
+// Configuration de revalidation
+export const revalidate = 10; // Revalidation toutes les 10 secondes
+export const dynamic = 'force-static'; // Force la génération statique
+export const dynamicParams = true; // Permet la génération de nouveaux paramètres
+
 export default async function ProjectsPage() {
   // Récupération des données côté serveur
   const [projects, featuredProjects] = await Promise.all([

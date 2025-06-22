@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -21,10 +15,8 @@ model User {
   image         String?
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
-
-  // Better Auth relations
-  sessions      Session[]
   accounts      Account[]
+  sessions      Session[]
 
   @@map("user")
 }
@@ -44,20 +36,20 @@ model Session {
 }
 
 model Account {
-  id                String   @id @default(cuid())
-  accountId         String   @map("account_id")
-  providerId        String   @map("provider_id")
-  userId            String   @map("user_id")
-  accessToken       String?  @map("access_token")
-  refreshToken      String?  @map("refresh_token")
-  idToken           String?  @map("id_token")
-  accessTokenExpiresAt DateTime? @map("access_token_expires_at")
+  id                    String    @id @default(cuid())
+  accountId             String    @map("account_id")
+  providerId            String    @map("provider_id")
+  userId                String    @map("user_id")
+  accessToken           String?   @map("access_token")
+  refreshToken          String?   @map("refresh_token")
+  idToken               String?   @map("id_token")
+  accessTokenExpiresAt  DateTime? @map("access_token_expires_at")
   refreshTokenExpiresAt DateTime? @map("refresh_token_expires_at")
-  scope             String?
-  password          String?
-  createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @updatedAt @map("updated_at")
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("account")
 }
@@ -78,17 +70,17 @@ model Project {
   title           String
   slug            String   @unique
   description     String
-  longDescription String   @map("long_description") @db.Text
+  longDescription String   @map("long_description")
   imageUrl        String   @map("image_url")
-  images          String[] // URLs des images additionnelles
+  images          String[]
   tags            String[]
   technologies    String[]
   features        String[]
-  category        String   // Frontend, Backend, Fullstack, Mobile
-  status          String   // Terminé, En cours
-  date            String   // Année de réalisation
-  duration        String   // Durée du projet
-  client          String   // Type de client
+  category        String
+  status          String
+  date            String
+  duration        String
+  client          String
   githubUrl       String   @map("github_url")
   liveUrl         String?  @map("live_url")
   featured        Boolean  @default(false)
@@ -100,11 +92,11 @@ model Project {
 }
 
 model Service {
-  id          String  @id @default(cuid())
+  id          String   @id @default(cuid())
   title       String
   description String
   price       Float
-  isPublished Boolean @default(false) @map("is_published")
+  isPublished Boolean  @default(false) @map("is_published")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
@@ -115,15 +107,15 @@ model Article {
   id          String   @id @default(cuid())
   title       String
   slug        String   @unique
-  excerpt     String   @db.Text
-  content     String   @db.Text
+  excerpt     String
+  content     String
   author      String   @default("Matheus Kops Guedes")
   publishedAt DateTime @default(now()) @map("published_at")
-  readTime    Int      @default(5) @map("read_time") // en minutes
+  readTime    Int      @default(5) @map("read_time")
   views       Int      @default(0)
   category    String
   tags        String[]
-  imageUrl    String?  @map("image_url") // Renommé de coverUrl pour cohérence
+  imageUrl    String?  @map("image_url")
   featured    Boolean  @default(false)
   isPublished Boolean  @default(false) @map("is_published")
   createdAt   DateTime @default(now()) @map("created_at")
@@ -133,11 +125,11 @@ model Article {
 }
 
 model Lab {
-  id          String  @id @default(cuid())
+  id          String   @id @default(cuid())
   title       String
   description String
   url         String
-  isPublished Boolean @default(false) @map("is_published")
+  isPublished Boolean  @default(false) @map("is_published")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
@@ -145,10 +137,10 @@ model Lab {
 }
 
 model Profile {
-  id        String @id @default(cuid())
-  fullName  String @map("full_name")
+  id        String   @id @default(cuid())
+  fullName  String   @map("full_name")
   bio       String
-  avatarUrl String @map("avatar_url")
+  avatarUrl String   @map("avatar_url")
   links     Json
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -157,63 +149,60 @@ model Profile {
 }
 
 model ContactSettings {
-  id                String   @id @default(cuid())
-  contactEmail      String   @map("contact_email")
-  phone             String?
-  location          String   @default("France")
-  availability      String   @default("Lun - Ven, 9h - 18h")
-  responseTime      String   @default("Je réponds généralement dans les 24h") @map("response_time")
-  preferredContact  String   @default("email") @map("preferred_contact") // email, phone, both
-  autoReply         Boolean  @default(true) @map("auto_reply")
-  autoReplyMessage  String?  @map("auto_reply_message") @db.Text
-  
-  // Configuration SMTP
-  smtpHost          String   @default("smtp.gmail.com") @map("smtp_host")
-  smtpPort          Int      @default(587) @map("smtp_port")
-  smtpSecure        Boolean  @default(false) @map("smtp_secure")
-  smtpUser          String   @default("") @map("smtp_user")
-  smtpPassword      String   @default("") @map("smtp_password")
-  smtpFromName      String   @default("Portfolio Contact") @map("smtp_from_name")
-  smtpFromEmail     String   @default("") @map("smtp_from_email")
-  
-  createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @updatedAt @map("updated_at")
+  id               String   @id @default(cuid())
+  contactEmail     String   @map("contact_email")
+  phone            String?
+  location         String   @default("France")
+  availability     String   @default("Lun - Ven, 9h - 18h")
+  responseTime     String   @default("Je réponds généralement dans les 24h") @map("response_time")
+  preferredContact String   @default("email") @map("preferred_contact")
+  autoReply        Boolean  @default(true) @map("auto_reply")
+  autoReplyMessage String?  @map("auto_reply_message")
+  smtpHost         String   @default("smtp.gmail.com") @map("smtp_host")
+  smtpPort         Int      @default(587) @map("smtp_port")
+  smtpSecure       Boolean  @default(false) @map("smtp_secure")
+  smtpUser         String   @default("") @map("smtp_user")
+  smtpPassword     String   @default("") @map("smtp_password")
+  smtpFromName     String   @default("Portfolio Contact") @map("smtp_from_name")
+  smtpFromEmail    String   @default("") @map("smtp_from_email")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
 
   @@map("contact_settings")
 }
 
 model Education {
-  id          String   @id @default(cuid())
-  title       String   // Ex: "Master en Informatique"
-  institution String   // Ex: "Université de Technologie"
-  location    String   // Ex: "Paris, France"
-  description String   @db.Text // Description détaillée
-  startDate   DateTime @map("start_date")
+  id          String    @id @default(cuid())
+  title       String
+  institution String
+  location    String
+  description String
+  startDate   DateTime  @map("start_date")
   endDate     DateTime? @map("end_date")
-  isCurrently Boolean  @default(false) @map("is_currently") // Actuellement en cours
-  grade       String?  // Ex: "Mention Bien", "16/20"
-  skills      String[] // Compétences acquises
-  isPublished Boolean  @default(false) @map("is_published")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  isCurrently Boolean   @default(false) @map("is_currently")
+  grade       String?
+  skills      String[]
+  isPublished Boolean   @default(false) @map("is_published")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
 
   @@map("educations")
 }
 
 model Experience {
-  id          String   @id @default(cuid())
-  title       String   // Ex: "Développeur Full Stack"
-  company     String   // Ex: "TechCorp"
-  location    String   // Ex: "Paris, France"
-  description String   @db.Text // Description détaillée
-  startDate   DateTime @map("start_date")
+  id          String    @id @default(cuid())
+  title       String
+  company     String
+  location    String
+  description String
+  startDate   DateTime  @map("start_date")
   endDate     DateTime? @map("end_date")
-  isCurrently Boolean  @default(false) @map("is_currently") // Actuellement en poste
-  skills      String[] // Compétences utilisées
-  companyUrl  String?  @map("company_url") // Site web de l'entreprise
-  isPublished Boolean  @default(false) @map("is_published")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  isCurrently Boolean   @default(false) @map("is_currently")
+  skills      String[]
+  companyUrl  String?   @map("company_url")
+  isPublished Boolean   @default(false) @map("is_published")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
 
   @@map("experiences")
 }

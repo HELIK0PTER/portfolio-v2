@@ -32,6 +32,11 @@ interface ProjectDetailPageProps {
   }>;
 }
 
+// Configuration de revalidation
+export const revalidate = 3600; // Revalidation toutes les heures
+export const dynamic = 'force-static'; // Force la génération statique
+export const dynamicParams = true; // Permet la génération de nouveaux paramètres
+
 export default async function ProjectDetailPage({
   params,
 }: ProjectDetailPageProps) {
@@ -403,11 +408,6 @@ export default async function ProjectDetailPage({
     </div>
   );
 }
-
-// Configuration de revalidation
-export const revalidate = 3600; // Revalidation toutes les heures
-export const dynamic = 'force-static'; // Force la génération statique
-export const dynamicParams = true; // Permet la génération de nouveaux paramètres
 
 export async function generateStaticParams() {
   try {

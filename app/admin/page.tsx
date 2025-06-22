@@ -15,47 +15,62 @@ export const metadata: Metadata = {
 }
 
 async function getAdminData() {
-  const [
-    projectsCount,
-    articles,
-    servicesCount,
-    recentProjects,
-  ] = await Promise.all([
-    prisma.project.count(),
-    getAllArticlesAdmin(),
-    prisma.service.count(),
-    prisma.project.findMany({
-      take: 5,
-      orderBy: { createdAt: "desc" },
-      select: {
-        id: true,
-        title: true,
-        status: true,
-        createdAt: true,
-        isPublished: true,
+  try {
+    const [
+      projectsCount,
+      articles,
+      servicesCount,
+      recentProjects,
+    ] = await Promise.all([
+      prisma.project.count(),
+      getAllArticlesAdmin(),
+      prisma.service.count(),
+      prisma.project.findMany({
+        take: 5,
+        orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          title: true,
+          status: true,
+          createdAt: true,
+          isPublished: true,
+        },
+      }),
+    ])
+
+    // Transformer les articles pour le format attendu par RecentItems
+    const recentArticles = articles
+      .slice(0, 5)
+      .map((article: Article) => ({
+        id: article.id,
+        slug: article.slug,
+        title: article.title,
+        createdAt: new Date(article.publishedAt),
+        isPublished: article.isPublished,
+      }))
+
+    return {
+      stats: {
+        projects: projectsCount,
+        articles: articles.length,
+        services: servicesCount,
       },
-    }),
-  ])
-
-  // Transformer les articles pour le format attendu par RecentItems
-  const recentArticles = articles
-    .slice(0, 5)
-    .map((article: Article) => ({
-      id: article.id,
-      slug: article.slug,
-      title: article.title,
-      createdAt: new Date(article.publishedAt),
-      isPublished: article.isPublished,
-    }))
-
-  return {
-    stats: {
-      projects: projectsCount,
-      articles: articles.length,
-      services: servicesCount,
-    },
-    recentProjects,
-    recentArticles,
+      recentProjects,
+      recentArticles,
+    }
+  } catch (error) {
+    console.error('Erreur de connexion à la base de données:', error);
+    
+    // Données par défaut en cas d'erreur de connexion
+    return {
+      stats: {
+        projects: 0,
+        articles: 0,
+        services: 0,
+      },
+      recentProjects: [],
+      recentArticles: [],
+    }
   }
 }
 

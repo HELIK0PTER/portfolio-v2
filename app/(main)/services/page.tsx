@@ -28,6 +28,8 @@ export const metadata: Metadata = {
 
 // Configuration de revalidation
 export const revalidate = 3600; // Revalidation toutes les heures
+export const dynamic = 'force-static'; // Force la génération statique
+export const dynamicParams = true; // Permet la génération de nouveaux paramètres
 
 async function getServices() {
   return await prisma.service.findMany({
