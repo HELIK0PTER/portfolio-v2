@@ -1,12 +1,8 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function POST(req: NextRequest) {
   try {
-    const { id } = await params;
     const formData = await req.formData();
 
     // Récupération et traitement des données
@@ -46,43 +42,8 @@ export async function POST(
       );
     }
 
-    // Vérifier que l'article existe
-    const existingArticle = await prisma.article.findUnique({
-      where: { id },
-    });
-
-    if (!existingArticle) {
-      return new Response(JSON.stringify({ error: "Article non trouvé" }), {
-        status: 404,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-
-    // Vérifier que le slug n'est pas déjà utilisé par un autre article
-    if (slug !== existingArticle.slug) {
-      const existingSlug = await prisma.article.findFirst({
-        where: {
-          slug,
-          id: { not: id },
-        },
-      });
-
-      if (existingSlug) {
-        return new Response(
-          JSON.stringify({
-            error: "Ce slug est déjà utilisé par un autre article",
-          }),
-          {
-            status: 400,
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-      }
-    }
-
-    // Mise à jour de l'article
-    await prisma.article.update({
-      where: { id },
+    // Créer l'article
+    const article = await prisma.article.create({
       data: {
         title,
         slug,
@@ -91,26 +52,23 @@ export async function POST(
         author,
         category,
         readTime,
-        imageUrl: imageUrl || null,
+        imageUrl,
         tags,
         featured,
         isPublished,
-        updatedAt: new Date(),
+        publishedAt: isPublished ? new Date() : undefined,
       },
     });
 
-    return new Response(JSON.stringify({ success: true }), {
-      status: 200,
+    return new Response(JSON.stringify({ success: true, article }), {
+      status: 201,
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("Erreur lors de la modification de l'article:", error);
-    return new Response(
-      JSON.stringify({ error: "Erreur lors de la modification de l'article" }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    console.error("Erreur lors de la création de l'article:", error);
+    return new Response(JSON.stringify({ error: "Erreur serveur" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }

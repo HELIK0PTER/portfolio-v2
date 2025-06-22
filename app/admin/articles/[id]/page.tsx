@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 import { getArticleById } from "@/lib/articles";
 import Image from "next/image";
 import { MarkdownRenderer } from "@/components/ui/MarkdownRenderer";
@@ -42,6 +43,20 @@ export default async function AdminArticlePage({
     notFound();
   }
 
+  async function handleDelete() {
+    "use server";
+
+    try {
+      await prisma.article.delete({
+        where: { id },
+      });
+    } catch (error) {
+      console.error("Erreur lors de la suppression de l'article:", error);
+      throw new Error("Erreur lors de la suppression de l'article");
+    }
+    redirect("/admin/articles");
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
@@ -60,16 +75,22 @@ export default async function AdminArticlePage({
                 {`Éditer`}
               </Button>
             </Link>
-            <Link href={`/articles/${article.slug}`} target="_blank" prefetch={false}>
+            <Link
+              href={`/articles/${article.slug}`}
+              target="_blank"
+              prefetch={false}
+            >
               <Button variant="outline" size="sm">
                 <Eye className="h-4 w-4 mr-2" />
                 {`Voir en ligne`}
               </Button>
             </Link>
-            <Button variant="destructive" size="sm">
-              <Trash2 className="h-4 w-4 mr-2" />
-              {`Supprimer`}
-            </Button>
+            <form action={handleDelete}>
+              <Button type="submit" variant="destructive" size="sm">
+                <Trash2 className="h-4 w-4 mr-2" />
+                {`Supprimer`}
+              </Button>
+            </form>
           </div>
         </div>
 
@@ -125,7 +146,9 @@ export default async function AdminArticlePage({
                 {/* Contenu */}
                 <div>
                   <div className="prose prose-sm dark:prose-invert max-w-none">
-                    <MarkdownRenderer content={article.content || "Aucun contenu défini."} />
+                    <MarkdownRenderer
+                      content={article.content || "Aucun contenu défini."}
+                    />
                   </div>
                 </div>
               </CardContent>
@@ -169,7 +192,9 @@ export default async function AdminArticlePage({
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-sm">{`Publié`}</span>
-                  <Badge variant={article.isPublished ? "default" : "secondary"}>
+                  <Badge
+                    variant={article.isPublished ? "default" : "secondary"}
+                  >
                     {article.isPublished ? "Oui" : "Non"}
                   </Badge>
                 </div>
