@@ -72,11 +72,11 @@ const defaultExperiences = [
     title: "Développeur Full Stack - Alternance",
     company: "Entreprise Recherchée",
     location: "À définir",
-    startDate: new Date("2024-09-01"),
-    endDate: new Date("2025-08-31"),
+    startDate: new Date("2025-09-01"),
+    endDate: new Date("2027-08-31"),
     isCurrently: false,
     description:
-      "🔍 Actuellement en recherche d'alternance pour septembre 2024. Intéressé par les missions de développement web full-stack, création d'applications modernes, et apprentissage au sein d'une équipe expérimentée.",
+      "🔍 Actuellement en recherche d'alternance pour septembre 2025. Intéressé par les missions de développement web full-stack, création d'applications modernes, et apprentissage au sein d'une équipe expérimentée.",
     skills: ["React", "Next.js", "TypeScript", "Node.js", "Prisma"],
     companyUrl: null,
     isPublished: true,
@@ -646,7 +646,7 @@ export default function ParcoursPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            {`Je suis disponible pour une alternance à partir de septembre 2024. N'hésitez pas à me contacter pour discuter d'opportunités de collaboration !`}
+            {`Je suis disponible pour une alternance à partir de septembre 2025. N'hésitez pas à me contacter pour discuter d'opportunités de collaboration !`}
           </motion.p>
           <motion.div
             className="flex flex-col sm:flex-row gap-4 justify-center"
