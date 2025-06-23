@@ -1,10 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { X, Upload, Link as LinkIcon } from "lucide-react";
 import Image from "next/image";
+import { createClient } from "@/utils/supabase/client";
 
 interface UnifiedImageUploaderProps {
   label?: string;
@@ -22,6 +22,8 @@ export function UnifiedImageUploader({
   const [uploading, setUploading] = useState(false);
   const [urlInput, setUrlInput] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const supabase = createClient();
 
   // Normaliser les valeurs pour le traitement
   const images = multiple
