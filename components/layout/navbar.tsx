@@ -14,8 +14,8 @@ import ThemeSelector from "./theme-selector";
 const navigation = [
   { name: "Accueil", href: "/" },
   { name: "Projets", href: "/projects" },
-  { name: "Services", href: "/services" },
   { name: "Parcours", href: "/parcours" },
+  { name: "Services", href: "/services" },
   //{ name: "Labs", href: "/labs" },
   { name: "Blog", href: "/articles" },
   { name: "Contact", href: "/contact" },
