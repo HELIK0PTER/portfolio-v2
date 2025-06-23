@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default async function AdminProjectEditPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ id: string }>;
 }) {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -25,10 +25,10 @@ export default async function AdminProjectEditPage({
     redirect("/login");
   }
 
-  const { slug } = await params;
+  const { id } = await params;
 
   const project = await prisma.project.findUnique({
-    where: { id: slug },
+    where: { id: id },
   });
   if (!project) {
     notFound();

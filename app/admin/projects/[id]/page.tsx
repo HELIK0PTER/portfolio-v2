@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { headers } from "next/headers";
 import { redirect, notFound } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 import Image from "next/image";
 import { ImageReady } from "@/components/ui/ImageReady";
-import { startTransition } from "react";
+import { DeleteProjectButton } from "@/components/admin/DeleteProjectButton";
 import { Project } from "@prisma/client";
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
 export default async function AdminProjectDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ id: string }>;
 }) {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -29,26 +30,32 @@ export default async function AdminProjectDetailPage({
     redirect("/login");
   }
 
-  const { slug } = await params;
+  const { id } = await params;
   const project : Project | null = await prisma.project.findUnique({
-    where: { slug },
+    where: { id: id },
   });
 
   if (!project) {
     notFound();
   }
 
-  async function handleDelete() {
-    startTransition(async () => {
-      const res = await fetch(`/api/admin/projects/${project?.id}`, {
-        method: "DELETE",
+  async function deleteProject() {
+    "use server";
+    
+    try {
+      await prisma.project.delete({
+        where: { id: id },
       });
-      if (res.ok) {
-        redirect("/admin/projects");
-      } else {
-        alert("Erreur lors de la suppression du projet");
-      }
-    });
+      
+      revalidatePath("/admin/projects");
+      revalidatePath("/projects");
+      revalidatePath("/");
+    } catch (error) {
+      console.error("Erreur lors de la suppression:", error);
+      throw new Error("Erreur lors de la suppression du projet");
+    }
+    
+    redirect("/admin/projects");
   }
 
   return (
@@ -70,14 +77,15 @@ export default async function AdminProjectDetailPage({
             <Link href={`/admin/projects/${project.id}/edit`}>
               <Button variant="secondary" size="sm">{`Modifier`}</Button>
             </Link>
-            <Button
-              variant="destructive"
-              size="sm"
-              type="submit"
-              onClick={handleDelete}
-            >
-              {`Supprimer`}
-            </Button>
+            <DeleteProjectButton action={deleteProject}>
+              <Button
+                variant="destructive"
+                size="sm"
+                type="submit"
+              >
+                {`Supprimer`}
+              </Button>
+            </DeleteProjectButton>
           </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

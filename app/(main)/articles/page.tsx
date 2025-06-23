@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { getAllArticles, getFeaturedArticles } from "@/lib/articles";
 import { ArticlesFilter } from "@/components/articles";
+import { ViewTracker } from "@/components/articles/ViewTracker";
 
 export default async function ArticlesPage() {
   // Récupération des données côté serveur
@@ -20,7 +21,6 @@ export default async function ArticlesPage() {
 
   // Calculer les statistiques
   const totalReadTime = articles.reduce((total, article) => total + article.readTime, 0);
-  const totalViews = articles.reduce((total, article) => total + article.views, 0);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -52,7 +52,7 @@ export default async function ArticlesPage() {
               </div>
               <div className="flex items-center gap-2">
                 <Eye className="h-4 w-4" />
-                <span>{totalViews.toLocaleString()} vues</span>
+                <ViewTracker />
               </div>
             </div>
           </div>

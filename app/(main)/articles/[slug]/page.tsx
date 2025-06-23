@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { getArticleBySlug } from "@/lib/articles";
 import { prisma } from "@/lib/prisma";
+import { ViewIncrementer, ViewTracker } from "@/components/articles";
 
 interface ArticlePageProps {
   params: Promise<{
@@ -40,13 +41,6 @@ export async function generateMetadata({
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params;
-
-  // Incrementer le nombre de vues
-  await prisma.article.update({
-    where: { slug },
-    data: { views: { increment: 1 } },
-  });
-
   const article = await getArticleBySlug(slug);
 
   if (!article) {
@@ -55,6 +49,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   return (
     <div className="min-h-screen bg-background">
+      <ViewIncrementer slug={slug} />
       <div className="container mx-auto px-4 py-8">
         {/* Navigation */}
         <div className="flex items-center gap-4 mb-8">
@@ -122,7 +117,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               </div>
               <div className="flex items-center gap-2">
                 <Eye className="h-4 w-4" />
-                <span>{article.views.toLocaleString()} vues</span>
+                <ViewTracker slug={slug} />
               </div>
             </div>
 
@@ -186,12 +181,15 @@ export async function generateStaticParams() {
       where: { isPublished: true },
       select: { slug: true },
     });
-    
+
     return articles.map((article) => ({
       slug: article.slug,
     }));
   } catch (error) {
-    console.error('Erreur lors de la génération des paramètres statiques:', error);
+    console.error(
+      "Erreur lors de la génération des paramètres statiques:",
+      error
+    );
     return [];
   }
 }
