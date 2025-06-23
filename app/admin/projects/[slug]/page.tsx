@@ -7,21 +7,15 @@ import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
-import { revalidatePath } from "next/cache";
 import Image from "next/image";
-import { DeleteProjectButton } from "@/components/admin/DeleteProjectButton";
 import { ImageReady } from "@/components/ui/ImageReady";
+import { startTransition } from "react";
+import { Project } from "@prisma/client";
 
 export const metadata: Metadata = {
   title: "Détail Projet | Admin",
   description: "Détail d'un projet (admin)",
 };
-
-async function deleteProjectAction(id: string) {
-  "use server";
-  await prisma.project.delete({ where: { id } });
-  revalidatePath("/admin/projects");
-}
 
 export default async function AdminProjectDetailPage({
   params,
@@ -36,21 +30,25 @@ export default async function AdminProjectDetailPage({
   }
 
   const { slug } = await params;
-  const project = await prisma.project.findUnique({
-    where: { id: slug },
+  const project : Project | null = await prisma.project.findUnique({
+    where: { slug },
   });
 
   if (!project) {
     notFound();
   }
 
-  async function serverDelete() {
-    "use server";
-    if (!project) {
-      notFound();
-    }
-    await deleteProjectAction(project.id);
-    redirect("/admin/projects");
+  async function handleDelete() {
+    startTransition(async () => {
+      const res = await fetch(`/api/admin/projects/${project?.id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        redirect("/admin/projects");
+      } else {
+        alert("Erreur lors de la suppression du projet");
+      }
+    });
   }
 
   return (
@@ -72,13 +70,14 @@ export default async function AdminProjectDetailPage({
             <Link href={`/admin/projects/${project.id}/edit`}>
               <Button variant="secondary" size="sm">{`Modifier`}</Button>
             </Link>
-            <DeleteProjectButton action={serverDelete}>
-              <Button
-                variant="destructive"
-                size="sm"
-                type="submit"
-              >{`Supprimer`}</Button>
-            </DeleteProjectButton>
+            <Button
+              variant="destructive"
+              size="sm"
+              type="submit"
+              onClick={handleDelete}
+            >
+              {`Supprimer`}
+            </Button>
           </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

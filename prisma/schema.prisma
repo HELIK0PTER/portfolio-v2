@@ -107,19 +107,19 @@ model Article {
   id          String   @id @default(cuid())
   title       String
   slug        String   @unique
-  excerpt     String
   content     String
-  author      String   @default("Matheus Kops Guedes")
-  publishedAt DateTime @default(now()) @map("published_at")
-  readTime    Int      @default(5) @map("read_time")
-  views       Int      @default(0)
-  category    String
   tags        String[]
-  imageUrl    String?  @map("image_url")
-  featured    Boolean  @default(false)
   isPublished Boolean  @default(false) @map("is_published")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
+  author      String   @default("Matheus Kops Guedes")
+  category    String
+  excerpt     String
+  featured    Boolean  @default(false)
+  imageUrl    String?  @map("image_url")
+  publishedAt DateTime @default(now()) @map("published_at")
+  readTime    Int      @default(5) @map("read_time")
+  views       Int      @default(0)
 
   @@map("articles")
 }

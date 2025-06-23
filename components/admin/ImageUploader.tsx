@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { createClient } from "@/utils/supabase/client";
 
 interface ImageUploaderProps {
   value?: string;
@@ -16,6 +16,8 @@ export function ImageUploader({ value, onUpload, label }: ImageUploaderProps) {
   const [inputUrl, setInputUrl] = useState<string>(value || "");
   const [uploading, setUploading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const supabase = createClient();
 
   async function handleFile(file: File) {
     setUploading(true);
