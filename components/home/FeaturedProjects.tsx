@@ -44,7 +44,7 @@ export default function FeaturedProjects() {
         <div className="py-16 px-4 md:py-24">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-              Projets Intéressants
+              Projets en Vedette
             </h2>
             <p className="mx-auto max-w-[700px] text-lg text-muted-foreground">
               {`Découvrez quelques-uns de mes projets les plus récents et innovants.`}
@@ -66,9 +66,9 @@ export default function FeaturedProjects() {
         <div className="py-16 px-4 md:py-24">
           <div className="text-center space-y-4">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-              Projets Intéressants
+              Projets en Vedette
             </h2>
-            <p className="mx-auto max-w-[700px] text-lg text-muted-foreground text-red-500">
+            <p className="mx-auto max-w-[700px] text-lg text-muted-foregroun">
               {error}
             </p>
           </div>
@@ -83,7 +83,7 @@ export default function FeaturedProjects() {
         <div className="py-16 px-4 md:py-24">
           <div className="text-center space-y-4">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-              Projets Intéressants
+              Projets en Vedette
             </h2>
             <p className="mx-auto max-w-[700px] text-lg text-muted-foreground">
               {`Aucun projet en vedette pour le moment.`}
@@ -99,7 +99,7 @@ export default function FeaturedProjects() {
       <div className="py-16 px-4 md:py-24">
         <div className="text-center space-y-4 mb-16">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-            Projets Intéressants
+            Projets en Vedette
           </h2>
           <p className="mx-auto max-w-[700px] text-lg text-muted-foreground">
             {`Découvrez quelques-uns de mes projets les plus récents et innovants.`}
