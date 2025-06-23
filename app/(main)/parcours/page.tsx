@@ -275,7 +275,7 @@ export default function ParcoursPage() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.8 }}
             >
-              {`Je recherche activement une alternance en développement web pour septembre 2024. Intéressé par une collaboration ?`}
+              {`Je recherche activement une alternance en développement web pour septembre 2025. Intéressé par une collaboration ?`}
             </motion.p>
             <motion.div
               className="flex flex-col sm:flex-row gap-3 justify-center"
