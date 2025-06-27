@@ -7,6 +7,12 @@ import { EducationForm } from "@/components/admin/EducationForm";
 export const metadata: Metadata = {
   title: "Nouvelle Formation | Admin",
   description: "Ajouter une nouvelle formation",
+  alternates: {
+    canonical: new URL(
+      "/admin/parcours/educations/new",
+      process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    ).toString(),
+  },
 };
 
 export default async function NewEducationPage() {

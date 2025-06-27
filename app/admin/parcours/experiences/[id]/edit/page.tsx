@@ -5,10 +5,20 @@ import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { ExperienceForm } from "@/components/admin/ExperienceForm";
 
-export const metadata: Metadata = {
-  title: "Modifier Expérience | Admin",
-  description: "Modifier une expérience",
-};
+export async function generateMetadata({
+  params,
+}: { params: { id: string } }): Promise<Metadata> {
+  return {
+    title: "Modifier Expérience | Admin",
+    description: "Modifier une expérience",
+    alternates: {
+      canonical: new URL(
+        `/admin/parcours/experiences/${params.id}/edit`,
+        process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+      ).toString(),
+    },
+  };
+}
 
 interface PageProps {
   params: Promise<{

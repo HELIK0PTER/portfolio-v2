@@ -10,6 +10,12 @@ import { NewArticleForm } from "@/components/admin/NewArticleForm";
 export const metadata: Metadata = {
   title: "Nouvel Article | Admin",
   description: "Rédiger un nouvel article de blog",
+  alternates: {
+    canonical: new URL(
+      "/admin/articles/new",
+      process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    ).toString(),
+  },
 };
 
 export default async function NewArticlePage() {

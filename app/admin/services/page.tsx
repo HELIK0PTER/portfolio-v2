@@ -8,6 +8,12 @@ import { ServicesManager } from "@/components/admin/ServicesManager";
 export const metadata: Metadata = {
   title: "Services | Admin",
   description: "Gestion des services",
+  alternates: {
+    canonical: new URL(
+      "/admin/services",
+      process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    ).toString(),
+  },
 };
 
 async function getServices() {

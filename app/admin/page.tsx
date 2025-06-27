@@ -12,7 +12,13 @@ import { RecentItems } from "@/components/admin/RecentItems"
 export const metadata: Metadata = {
   title: "Dashboard Admin | Portfolio",
   description: "Interface d'administration du portfolio",
-}
+  alternates: {
+    canonical: new URL(
+      "/admin",
+      process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    ).toString(),
+  },
+};
 
 async function getAdminData() {
   try {

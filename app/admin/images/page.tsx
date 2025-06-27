@@ -4,6 +4,12 @@ import { ImageCleanupManager } from '@/components/admin/ImageCleanupManager';
 export const metadata: Metadata = {
   title: `Gestion des images | Admin`,
   description: `Nettoyage et gestion des images orphelines`,
+  alternates: {
+    canonical: new URL(
+      "/admin/images",
+      process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    ).toString(),
+  },
 };
 
 export default async function AdminImagesPage() {
