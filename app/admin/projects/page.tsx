@@ -10,6 +10,12 @@ import { Button } from "@/components/ui/button";
 export const metadata: Metadata = {
   title: "Projets | Admin",
   description: "Gestion des projets du portfolio (admin)",
+  alternates: {
+    canonical: new URL(
+      "/admin/projects",
+      process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    ).toString(),
+  },
 };
 
 export default async function AdminProjectsPage() {

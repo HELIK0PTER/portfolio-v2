@@ -10,6 +10,12 @@ import { Button } from "@/components/ui/button";
 export const metadata: Metadata = {
   title: "Articles | Admin",
   description: "Gestion des articles du blog (admin)",
+  alternates: {
+    canonical: new URL(
+      "/admin/articles",
+      process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    ).toString(),
+  },
 };
 
 export default async function AdminArticlesPage() {

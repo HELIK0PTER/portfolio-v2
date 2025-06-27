@@ -7,6 +7,12 @@ import { NewProjectForm } from "@/components/admin/NewProjectForm";
 export const metadata: Metadata = {
   title: "Nouveau Projet | Admin",
   description: "Ajouter un nouveau projet au portfolio",
+  alternates: {
+    canonical: new URL(
+      "/admin/projects/new",
+      process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    ).toString(),
+  },
 };
 
 export default function NewProjectPage() {

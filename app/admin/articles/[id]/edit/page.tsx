@@ -8,10 +8,20 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { EditArticleForm } from "@/components/admin/EditArticleForm";
 
-export const metadata: Metadata = {
-  title: "Éditer Article | Admin",
-  description: "Édition d'un article (admin)",
-};
+export async function generateMetadata({
+  params,
+}: { params: { id: string } }): Promise<Metadata> {
+  return {
+    title: "Éditer Article | Admin",
+    description: "Édition d'un article (admin)",
+    alternates: {
+      canonical: new URL(
+        `/admin/articles/${params.id}/edit`,
+        process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+      ).toString(),
+    },
+  };
+}
 
 export default async function AdminArticleEditPage({
   params,

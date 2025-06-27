@@ -31,6 +31,12 @@ export async function generateMetadata({
   return {
     title: `${article.title} | Blog`,
     description: article.excerpt,
+    alternates: {
+      canonical: new URL(
+        `/articles/${slug}`,
+        process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+      ).toString(),
+    },
     openGraph: {
       title: article.title,
       description: article.excerpt,

@@ -5,10 +5,20 @@ import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { EducationForm } from "@/components/admin/EducationForm";
 
-export const metadata: Metadata = {
-  title: "Modifier Formation | Admin",
-  description: "Modifier une formation",
-};
+export async function generateMetadata({
+  params,
+}: { params: { id: string } }): Promise<Metadata> {
+  return {
+    title: "Modifier Formation | Admin",
+    description: "Modifier une formation",
+    alternates: {
+      canonical: new URL(
+        `/admin/parcours/educations/${params.id}/edit`,
+        process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+      ).toString(),
+    },
+  };
+}
 
 interface PageProps {
   params: Promise<{

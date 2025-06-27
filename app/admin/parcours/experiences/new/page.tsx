@@ -7,6 +7,12 @@ import { ExperienceForm } from "@/components/admin/ExperienceForm";
 export const metadata: Metadata = {
   title: "Nouvelle Expérience | Admin",
   description: "Ajouter une nouvelle expérience",
+  alternates: {
+    canonical: new URL(
+      "/admin/parcours/experiences/new",
+      process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    ).toString(),
+  },
 };
 
 export default async function NewExperiencePage() {

@@ -24,6 +24,12 @@ export const metadata: Metadata = {
   title: "Services | Matheus Kops Guedes",
   description:
     "Découvrez mes services de développement web, création d'API, optimisation et consulting technique.",
+  alternates: {
+    canonical: new URL(
+      "/services",
+      process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    ).toString(),
+  },
 };
 
 async function getServices() {

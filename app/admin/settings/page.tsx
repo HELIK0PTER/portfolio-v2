@@ -7,6 +7,12 @@ import { SettingsForm } from "@/components/admin/SettingsForm";
 export const metadata: Metadata = {
   title: "Paramètres | Admin",
   description: "Configuration des paramètres de contact et SMTP",
+  alternates: {
+    canonical: new URL(
+      "/admin/settings",
+      process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    ).toString(),
+  },
 };
 
 export default async function SettingsPage() {

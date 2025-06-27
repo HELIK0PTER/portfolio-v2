@@ -8,6 +8,12 @@ import { ParcoursManager } from "@/components/admin/ParcoursManager";
 export const metadata: Metadata = {
   title: "Parcours | Admin",
   description: "Gestion des formations et expériences",
+  alternates: {
+    canonical: new URL(
+      "/admin/parcours",
+      process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    ).toString(),
+  },
 };
 
 async function getEducations() {

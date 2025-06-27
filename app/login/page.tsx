@@ -4,6 +4,12 @@ import { LoginForm } from "@/components/auth/LoginForm";
 export const metadata: Metadata = {
   title: "Connexion Admin | Portfolio",
   description: "Accès à l'interface d'administration du portfolio",
+  alternates: {
+    canonical: new URL(
+      "/login",
+      process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    ).toString(),
+  },
 };
 
 export default function LoginPage() {

@@ -13,10 +13,20 @@ import { ImageReady } from "@/components/ui/ImageReady";
 import { DeleteProjectButton } from "@/components/admin/DeleteProjectButton";
 import { Project } from "@prisma/client";
 
-export const metadata: Metadata = {
-  title: "Détail Projet | Admin",
-  description: "Détail d'un projet (admin)",
-};
+export async function generateMetadata({
+  params,
+}: { params: { id: string } }): Promise<Metadata> {
+  return {
+    title: "Détail Projet | Admin",
+    description: "Détail d'un projet (admin)",
+    alternates: {
+      canonical: new URL(
+        `/admin/projects/${params.id}`,
+        process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+      ).toString(),
+    },
+  };
+}
 
 export default async function AdminProjectDetailPage({
   params,

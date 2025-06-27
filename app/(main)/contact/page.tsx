@@ -14,6 +14,12 @@ import { prisma } from "@/lib/prisma";
 export const metadata: Metadata = {
   title: "Contact | Matheus Kops Guedes",
   description: "Contactez-moi pour discuter de vos projets et collaborations",
+  alternates: {
+    canonical: new URL(
+      "/contact",
+      process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    ).toString(),
+  },
 };
 
 async function getContactSettings() {
