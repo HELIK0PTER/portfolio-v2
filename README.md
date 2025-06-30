@@ -155,6 +155,7 @@ Tous les composants UI sont basés sur ShadCN et se trouvent dans \`components/u
 1. Connectez votre repo GitHub à Vercel
 2. Configurez les variables d'environnement
 3. Déployez automatiquement
+4. Vérifiez que `NEXT_PUBLIC_SITE_URL` pointe vers votre domaine afin que les routes `/sitemap.xml` et `/robots.txt` soient correctement générées. Une fois le déploiement terminé, elles doivent être accessibles.
 
 ### Autres plateformes
 Le projet est compatible avec toute plateforme supportant Next.js (Netlify, Railway, etc.)
