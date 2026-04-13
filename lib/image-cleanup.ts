@@ -1,4 +1,4 @@
-import { supabaseScript } from "@/utils/supabase/scripts";
+import { createScriptClient } from "@/utils/supabase/scripts";
 import { prisma } from "./prisma";
 
 /**
@@ -51,17 +51,6 @@ async function getAllImageReferences(): Promise<Set<string>> {
       }
     });
 
-    // Images des articles
-    const articles = await prisma.article.findMany({
-      select: { id: true, imageUrl: true },
-    });
-
-    articles.forEach((article) => {
-      if (article.imageUrl && isSupabaseStorageUrl(article.imageUrl)) {
-        const fileName = extractFileNameFromUrl(article.imageUrl);
-        if (fileName) imageUrls.add(fileName);
-      }
-    });
 
     // Images des profils
     const profiles = await prisma.profile.findMany({
@@ -93,6 +82,7 @@ async function getAllImageReferences(): Promise<Set<string>> {
  */
 async function getAllStorageFiles(): Promise<string[]> {
   try {
+    const supabaseScript = createScriptClient();
     const { data: files, error } = await supabaseScript.storage
       .from("project-images")
       .list("", {
@@ -127,6 +117,7 @@ async function deleteOrphanedImages(orphanedFiles: string[]): Promise<void> {
 
   try {
     // Supprimer par lots pour éviter les timeouts
+    const supabaseScript = createScriptClient();
     const batchSize = 10;
     let deletedCount = 0;
 
