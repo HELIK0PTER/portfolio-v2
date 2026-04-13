@@ -11,13 +11,6 @@ export function QuickActions() {
       color: "bg-blue-500 hover:bg-blue-600",
     },
     {
-      title: "Nouvel Article",
-      description: "Rédiger un nouvel article de blog",
-      href: "/admin/articles/new",
-      icon: FileText,
-      color: "bg-green-500 hover:bg-green-600",
-    },
-    {
       title: "Voir le Site",
       description: "Consulter le portfolio public",
       href: "/",

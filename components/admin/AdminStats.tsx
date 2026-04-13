@@ -3,7 +3,6 @@ import { FolderOpen, FileText, Briefcase, TrendingUp } from "lucide-react"
 interface AdminStatsProps {
   stats: {
     projects: number
-    articles: number
     services: number
   }
 }
@@ -18,13 +17,6 @@ export function AdminStats({ stats }: AdminStatsProps) {
       bgColor: "bg-blue-100 dark:bg-blue-900/20",
     },
     {
-      title: "Articles",
-      value: stats.articles,
-      icon: FileText,
-      color: "text-green-600",
-      bgColor: "bg-green-100 dark:bg-green-900/20",
-    },
-    {
       title: "Services",
       value: stats.services,
       icon: Briefcase,
@@ -33,7 +25,7 @@ export function AdminStats({ stats }: AdminStatsProps) {
     },
     {
       title: "Total",
-      value: stats.projects + stats.articles + stats.services,
+      value: stats.projects + stats.services,
       icon: TrendingUp,
       color: "text-orange-600",
       bgColor: "bg-orange-100 dark:bg-orange-900/20",

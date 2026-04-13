@@ -3,12 +3,8 @@ import { prisma } from "@/lib/prisma";
 export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
-  const [projects, articles] = await Promise.all([
+  const [projects] = await Promise.all([
     prisma.project.findMany({
-      where: { isPublished: true },
-      select: { slug: true, updatedAt: true },
-    }),
-    prisma.article.findMany({
       where: { isPublished: true },
       select: { slug: true, updatedAt: true },
     }),
@@ -18,7 +14,6 @@ export async function GET() {
     "",
     "/projects",
     "/services",
-    "/articles",
     "/parcours",
     "/contact",
   ];
@@ -30,10 +25,6 @@ export async function GET() {
     ...projects.map(
       (p) =>
         `<url><loc>${baseUrl}/projects/${p.slug}</loc><lastmod>${p.updatedAt.toISOString()}</lastmod></url>`
-    ),
-    ...articles.map(
-      (a) =>
-        `<url><loc>${baseUrl}/articles/${a.slug}</loc><lastmod>${a.updatedAt.toISOString()}</lastmod></url>`
     ),
   ].join("");
 
