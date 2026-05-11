@@ -1,7 +1,9 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Image from "next/image";
+import { useTranslations } from "next-intl";
+import { ArrowRight, ExternalLink, Github } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,12 +13,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, ExternalLink, Github } from "lucide-react";
-import { Project } from "@prisma/client";
-import Image from "next/image";
+import type { ResolvedProject } from "@/lib/data";
 
 interface ProjectCardProps {
-  project: Project;
+  project: ResolvedProject;
   variant?: "default" | "featured" | "compact";
   showActions?: boolean;
   showStatus?: boolean;
@@ -34,10 +34,9 @@ export default function ProjectCard({
   showDate = false,
   className = "",
 }: ProjectCardProps) {
+  const t = useTranslations("Projects");
   const isFeatured = variant === "featured";
   const isCompact = variant === "compact";
-  const pathname = usePathname();
-  const isAdmin = pathname.startsWith("/admin");
 
   return (
     <Card
@@ -56,10 +55,9 @@ export default function ProjectCard({
             className="object-cover w-full h-full"
           />
         )}
-        {/* Badges */}
         <div className="absolute top-3 left-3 flex gap-2">
           {isFeatured && (
-            <Badge className="bg-primary/90 backdrop-blur-sm">⭐ Vedette</Badge>
+            <Badge className="bg-primary/90 backdrop-blur-sm">⭐</Badge>
           )}
           {showCategory && (
             <Badge variant="outline" className="bg-background/80">
@@ -70,11 +68,7 @@ export default function ProjectCard({
 
         <div className="absolute top-3 right-3 flex gap-2">
           {showStatus && (
-            <Badge
-              variant={project.status === "Terminé" ? "default" : "secondary"}
-            >
-              {project.status}
-            </Badge>
+            <Badge variant="default">{project.status}</Badge>
           )}
         </div>
       </div>
@@ -102,14 +96,9 @@ export default function ProjectCard({
       </CardHeader>
 
       <CardContent className="space-y-4">
-        {/* Tags */}
         <div className="flex flex-wrap gap-1.5">
-          {project.tags.slice(0, isCompact ? 2 : 3).map((tag: string) => (
-            <Badge
-              key={tag}
-              variant="secondary"
-              className="text-xs font-medium"
-            >
+          {project.tags.slice(0, isCompact ? 2 : 3).map((tag) => (
+            <Badge key={tag} variant="secondary" className="text-xs font-medium">
               {tag}
             </Badge>
           ))}
@@ -120,7 +109,6 @@ export default function ProjectCard({
           )}
         </div>
 
-        {/* Actions */}
         {showActions && (
           <div className="flex gap-2">
             <Button
@@ -129,14 +117,8 @@ export default function ProjectCard({
               size="sm"
               className="flex-1 group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
             >
-              <Link
-                href={
-                  isAdmin
-                    ? `/admin/projects/${project.id}`
-                    : `/projects/${project.slug}`
-                }
-              >
-                {isCompact ? "Voir" : "Détails"}
+              <Link href={`/projects/${project.slug}`}>
+                {t("viewProject")}
                 <ArrowRight className="ml-1 h-3 w-3" />
               </Link>
             </Button>
@@ -145,23 +127,23 @@ export default function ProjectCard({
               <>
                 {project.liveUrl && (
                   <Button asChild size="sm" variant="outline">
-                    <Link
+                    <a
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       <ExternalLink className="h-3 w-3" />
-                    </Link>
+                    </a>
                   </Button>
                 )}
                 <Button asChild size="sm" variant="outline">
-                  <Link
+                  <a
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <Github className="h-3 w-3" />
-                  </Link>
+                  </a>
                 </Button>
               </>
             )}

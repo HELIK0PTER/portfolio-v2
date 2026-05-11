@@ -1,58 +1,31 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
+
+const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'taocifcxgqhxarpuvwrj.supabase.co',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'saiuzjhqszuaktgdrmnc.supabase.co',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        port: '',
-        pathname: '/**',
-      },
-    ],
-    formats: ['image/webp', 'image/avif'],
-    minimumCacheTTL: 31536000, // 1 an de cache
+    formats: ["image/webp", "image/avif"],
+    minimumCacheTTL: 31536000,
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
-  
-  // Optimisations de performance
+
   experimental: {
-    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
+    optimizePackageImports: ["lucide-react", "@radix-ui/react-icons"],
   },
-  
-  // Compression
+
   compress: true,
-  
-  // Headers de performance
+
   headers: async () => [
     {
-      source: '/(.*)',
+      source: "/(.*)",
       headers: [
-        {
-          key: 'X-DNS-Prefetch-Control',
-          value: 'on'
-        },
-        {
-          key: 'X-Frame-Options',
-          value: 'DENY'
-        }
-      ]
-    }
+        { key: "X-DNS-Prefetch-Control", value: "on" },
+        { key: "X-Frame-Options", value: "DENY" },
+      ],
+    },
   ],
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);

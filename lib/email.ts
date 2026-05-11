@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { prisma } from "./prisma";
+import { contact } from "./data/contact";
 
 export interface ContactFormData {
   name: string;
@@ -8,164 +8,103 @@ export interface ContactFormData {
   message: string;
 }
 
-async function getContactSettings() {
-  let settings = await prisma.contactSettings.findFirst();
+function readSmtpConfig() {
+  const host = process.env.SMTP_HOST;
+  const port = Number(process.env.SMTP_PORT ?? "587");
+  const secure = process.env.SMTP_SECURE === "true";
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASSWORD;
+  const fromName = process.env.SMTP_FROM_NAME ?? "Portfolio Contact";
+  const fromEmail = process.env.SMTP_FROM_EMAIL ?? user;
 
-  if (!settings) {
-    // Créer des paramètres par défaut si aucun n'existe
-    settings = await prisma.contactSettings.create({
-      data: {
-        contactEmail: "matheuskopsguedes@gmail.com",
-        smtpHost: "smtp.gmail.com",
-        smtpPort: 587,
-        smtpSecure: false,
-        smtpUser: "",
-        smtpPassword: "",
-        smtpFromName: "Portfolio Contact",
-        smtpFromEmail: "",
-      },
-    });
+  if (!host || !user || !pass || !fromEmail) {
+    throw new Error(
+      "SMTP configuration is incomplete. Set SMTP_HOST, SMTP_USER, SMTP_PASSWORD, SMTP_FROM_EMAIL.",
+    );
   }
 
-  return settings;
+  return { host, port, secure, user, pass, fromName, fromEmail };
 }
 
 export async function sendContactEmail(data: ContactFormData) {
-  try {
-    const settings = await getContactSettings();
+  const smtp = readSmtpConfig();
 
-    // Vérifier que la configuration SMTP est complète
-    if (
-      !settings.smtpUser ||
-      !settings.smtpPassword ||
-      !settings.smtpFromEmail
-    ) {
-      throw new Error(
-        "La configuration SMTP n'est pas complète. Veuillez configurer les paramètres dans l'administration."
-      );
-    }
+  const transporter = nodemailer.createTransport({
+    host: smtp.host,
+    port: smtp.port,
+    secure: smtp.secure,
+    auth: { user: smtp.user, pass: smtp.pass },
+  });
 
-    // Créer le transporteur Nodemailer
-    const transporter = nodemailer.createTransport({
-      host: settings.smtpHost,
-      port: settings.smtpPort,
-      secure: settings.smtpSecure,
-      auth: {
-        user: settings.smtpUser,
-        pass: settings.smtpPassword,
-      },
-    });
+  await transporter.verify();
 
-    // Vérifier la connexion
-    await transporter.verify();
-
-    // Envoyer l'email
-    const emailHtml = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #333;">Nouveau message de contact</h2>
-        
-        <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <p><strong>Nom:</strong> ${data.name}</p>
-          <p><strong>Email:</strong> ${data.email}</p>
-          <p><strong>Sujet:</strong> ${data.subject}</p>
-        </div>
-        
-        <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
-          <h3 style="color: #333; margin-top: 0;">Message:</h3>
-          <p style="line-height: 1.6; color: #555;">${data.message.replace(/\n/g, "<br>")}</p>
-        </div>
-        
-        <div style="margin-top: 20px; font-size: 14px; color: #888;">
-          <p>Ce message a été envoyé depuis votre portfolio.</p>
-          <p><strong>Répondre à:</strong> ${data.email}</p>
-        </div>
+  const emailHtml = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #333;">Nouveau message de contact</h2>
+      <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <p><strong>Nom:</strong> ${data.name}</p>
+        <p><strong>Email:</strong> ${data.email}</p>
+        <p><strong>Sujet:</strong> ${data.subject}</p>
       </div>
-    `;
-
-    const emailText = `
-      Nouveau message de contact
-      
-      Nom: ${data.name}
-      Email: ${data.email}
-      Sujet: ${data.subject}
-      
-      Message:
-      ${data.message}
-      
-      ---
-      Ce message a été envoyé depuis votre portfolio.
-      Répondre à: ${data.email}
-    `;
-
-    // 1. Envoyer l'email au propriétaire du portfolio
-    const info = await transporter.sendMail({
-      from: `${settings.smtpFromName} <${settings.smtpFromEmail}>`,
-      to: settings.contactEmail,
-      replyTo: data.email,
-      subject: `Nouveau message de contact: ${data.subject}`,
-      html: emailHtml,
-      text: emailText,
-    });
-
-    // 2. Envoyer un email de confirmation à l'utilisateur
-    const confirmationHtml = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #333;">Confirmation de votre demande de contact</h2>
-        
-        <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <p>Bonjour <strong>${data.name}</strong>,</p>
-          <p>Votre demande de contact a bien été prise en compte. Je vous répondrai dans les plus brefs délais.</p>
-        </div>
-        
-        <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
-          <h3 style="color: #333; margin-top: 0;">Récapitulatif de votre message :</h3>
-          <p><strong>Sujet :</strong> ${data.subject}</p>
-          <p><strong>Message :</strong></p>
-          <p style="line-height: 1.6; color: #555; padding: 10px; background: #f9f9f9; border-radius: 4px;">${data.message.replace(/\n/g, "<br>")}</p>
-        </div>
-        
-        <div style="margin-top: 20px; font-size: 14px; color: #888;">
-          <p>Merci pour votre intérêt !</p>
-          <p><strong>Matheus Kops Guedes</strong><br/>
-          Développeur Full Stack</p>
-          <p style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee;">
-            <em>Ceci est un message automatique, merci de ne pas répondre à cet email.</em>
-          </p>
-        </div>
+      <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
+        <h3 style="color: #333; margin-top: 0;">Message:</h3>
+        <p style="line-height: 1.6; color: #555;">${data.message.replace(/\n/g, "<br>")}</p>
       </div>
-    `;
+      <div style="margin-top: 20px; font-size: 14px; color: #888;">
+        <p>Ce message a été envoyé depuis votre portfolio.</p>
+        <p><strong>Répondre à:</strong> ${data.email}</p>
+      </div>
+    </div>
+  `;
 
-    const confirmationText = `
-      Confirmation de votre demande de contact
-      
-      Bonjour ${data.name},
-      
-      Votre demande de contact a bien été prise en compte. Je vous répondrai dans les plus brefs délais.
-      
-      Récapitulatif de votre message :
-      Sujet : ${data.subject}
-      Message : ${data.message}
-      
-      Merci pour votre intérêt !
-      
-      Matheus Kops Guedes
-      Développeur Full Stack
-      
-      ---
-      Ceci est un message automatique, merci de ne pas répondre à cet email.
-    `;
+  const emailText = `Nouveau message de contact
 
-    await transporter.sendMail({
-      from: `${settings.smtpFromName} <${settings.smtpFromEmail}>`,
-      to: data.email,
-      subject: "✅ Confirmation de votre demande de contact",
-      html: confirmationHtml,
-      text: confirmationText,
-    });
+Nom: ${data.name}
+Email: ${data.email}
+Sujet: ${data.subject}
 
-    return { success: true, messageId: info.messageId };
-  } catch (error) {
-    console.error("Erreur lors de l'envoi de l'email:", error);
-    throw error;
-  }
+Message:
+${data.message}
+
+---
+Répondre à: ${data.email}`;
+
+  const info = await transporter.sendMail({
+    from: `${smtp.fromName} <${smtp.fromEmail}>`,
+    to: contact.contactEmail,
+    replyTo: data.email,
+    subject: `Nouveau message de contact: ${data.subject}`,
+    html: emailHtml,
+    text: emailText,
+  });
+
+  const confirmationHtml = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #333;">Confirmation de votre demande de contact</h2>
+      <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <p>Bonjour <strong>${data.name}</strong>,</p>
+        <p>Votre demande de contact a bien été prise en compte. Je vous répondrai dans les plus brefs délais.</p>
+      </div>
+      <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
+        <h3 style="color: #333; margin-top: 0;">Récapitulatif de votre message :</h3>
+        <p><strong>Sujet :</strong> ${data.subject}</p>
+        <p><strong>Message :</strong></p>
+        <p style="line-height: 1.6; color: #555; padding: 10px; background: #f9f9f9; border-radius: 4px;">${data.message.replace(/\n/g, "<br>")}</p>
+      </div>
+      <div style="margin-top: 20px; font-size: 14px; color: #888;">
+        <p>Merci pour votre intérêt !</p>
+        <p><strong>Matheus Kops Guedes</strong><br/>Développeur Full Stack</p>
+      </div>
+    </div>
+  `;
+
+  await transporter.sendMail({
+    from: `${smtp.fromName} <${smtp.fromEmail}>`,
+    to: data.email,
+    subject: "✅ Confirmation de votre demande de contact",
+    html: confirmationHtml,
+    text: `Bonjour ${data.name},\n\nVotre demande de contact a bien été prise en compte.\n\nSujet : ${data.subject}\nMessage : ${data.message}\n\nMatheus Kops Guedes`,
+  });
+
+  return { success: true, messageId: info.messageId };
 }

@@ -1,0 +1,103 @@
+{
+  "Nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "parcours": "Career",
+    "services": "Services",
+    "contact": "Contact"
+  },
+  "Home": {
+    "heroPrefix": "Full Stack",
+    "heroHighlight": "Developer",
+    "heroSubtitle": "Full Stack Developer specialized in Next.js, React and TypeScript. I build modern, performant web applications.",
+    "ctaSeeProjects": "See my projects",
+    "ctaContact": "Get in touch",
+    "downloadCv": "Download my resume",
+    "downloadCvHere": "here",
+    "statsProjectsLabel": "Projects shipped",
+    "statsExperienceLabel": "Years of dev experience",
+    "statsEducationLabel": "Specialized in development",
+    "statsCoffeeLabel": "Cups of coffee",
+    "skillsTitle": "My Skills",
+    "skillsSubtitle": "I have a full range of web development skills to meet your needs.",
+    "skillsWebTitle": "Web Development",
+    "skillsWebDesc": "Modern, performant web applications with React, Next.js and TypeScript.",
+    "skillsPerfTitle": "Performance Optimization",
+    "skillsPerfDesc": "Improving performance and UX of your applications.",
+    "skillsApiTitle": "API & Backend",
+    "skillsApiDesc": "Robust, scalable APIs with Node.js and databases.",
+    "ctaHireTitle": "Ready to hire me on your team?",
+    "ctaHireSubtitle": "Let's talk and build something great together.",
+    "ctaHireButton": "Contact me"
+  },
+  "Projects": {
+    "title": "My Projects",
+    "subtitle": "A selection of my web development projects and applications.",
+    "featuredTitle": "Featured Projects",
+    "featuredSubtitle": "Some of my most polished work.",
+    "seeAll": "See all projects",
+    "filterAll": "All",
+    "viewProject": "View project",
+    "viewLive": "View live",
+    "viewCode": "Source code",
+    "backToProjects": "Back to projects",
+    "client": "Client",
+    "date": "Date",
+    "duration": "Duration",
+    "category": "Category",
+    "status": "Status",
+    "technologies": "Technologies",
+    "features": "Features",
+    "otherProjects": "Other projects"
+  },
+  "Parcours": {
+    "title": "My Career",
+    "subtitle": "My professional experience and academic background.",
+    "experiences": "Experience",
+    "educations": "Education",
+    "skills": "Skills",
+    "current": "Present",
+    "to": "to"
+  },
+  "Services": {
+    "title": "My Services",
+    "subtitle": "Discover the services I offer to bring your projects to life.",
+    "from": "From",
+    "contactCta": "Get in touch"
+  },
+  "Contact": {
+    "title": "Contact me",
+    "subtitle": "Feel free to reach out to discuss your project.",
+    "email": "Email",
+    "phone": "Phone",
+    "location": "Location",
+    "availability": "Availability",
+    "responseTime": "Response time",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "subject": "Subject",
+      "message": "Message",
+      "send": "Send",
+      "sending": "Sending…",
+      "success": "Message sent, thanks!",
+      "error": "Something went wrong. Try again."
+    }
+  },
+  "Footer": {
+    "rights": "All rights reserved.",
+    "madeWith": "Built with"
+  },
+  "Common": {
+    "language": "Language",
+    "switchToEnglish": "English",
+    "switchToFrench": "Français"
+  },
+  "Theme": {
+    "toggle": "Toggle theme",
+    "label": "Theme",
+    "default": "Default",
+    "defaultDesc": "Default theme",
+    "noCustom": "No custom theme found"
+  }
+}

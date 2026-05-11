@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Palette } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -134,6 +135,7 @@ const injectThemeVariables = (variables: {
 };
 
 export default function ThemeSelector() {
+  const t = useTranslations("Theme");
   const [currentTheme, setCurrentTheme] = useState<string>("default");
   const [availableThemes, setAvailableThemes] = useState<Theme[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -202,7 +204,7 @@ export default function ThemeSelector() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="gap-2">
           <Palette className="h-4 w-4" />
-          <span className="hidden sm:inline">Thème</span>
+          <span className="hidden sm:inline">{t("label")}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48 space-y-1">
@@ -212,9 +214,9 @@ export default function ThemeSelector() {
           className={currentTheme === "default" ? "bg-accent" : ""}
         >
           <div className="flex flex-col">
-            <span className="font-medium">Défaut</span>
+            <span className="font-medium">{t("default")}</span>
             <span className={`text-xs ${currentTheme === "default" ? "" : "text-muted-foreground"}`}>
-              Thème par défaut
+              {t("defaultDesc")}
             </span>
           </div>
         </DropdownMenuItem>
@@ -238,7 +240,7 @@ export default function ThemeSelector() {
         {availableThemes.length === 0 && (
           <DropdownMenuItem disabled>
             <span className="text-xs text-muted-foreground">
-              Aucun thème personnalisé trouvé
+              {t("noCustom")}
             </span>
           </DropdownMenuItem>
         )}

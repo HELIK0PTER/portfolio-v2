@@ -1,33 +1,33 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "./theme-toggle";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, X } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
+import { Link, usePathname } from "@/i18n/navigation";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { ThemeToggle } from "./theme-toggle";
 import ThemeSelector from "./theme-selector";
-
-const navigation = [
-  { name: "Accueil", href: "/" },
-  { name: "Projets", href: "/projects" },
-  { name: "Parcours", href: "/parcours" },
-  { name: "Services", href: "/services" },
-  //{ name: "Labs", href: "/labs" },
-  { name: "Contact", href: "/contact" },
-];
+import { LanguageSwitcher } from "./language-switcher";
+import { cn } from "@/lib/utils";
 
 export function Navbar() {
   const pathname = usePathname();
+  const t = useTranslations("Nav");
   const [isOpen, setIsOpen] = useState(false);
+
+  const navigation = [
+    { name: t("home"), href: "/" },
+    { name: t("projects"), href: "/projects" },
+    { name: t("parcours"), href: "/parcours" },
+    { name: t("services"), href: "/services" },
+    { name: t("contact"), href: "/contact" },
+  ];
 
   return (
     <header className="flex justify-center sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <nav className="container flex h-16 items-center justify-between px-4">
-        {/* Logo */}
         <Link href="/" className="flex items-center space-x-2">
           <motion.div
             whileHover={{ scale: 1.05 }}
@@ -38,17 +38,16 @@ export function Navbar() {
           </motion.div>
         </Link>
 
-        {/* Navigation Desktop */}
         <div className="hidden lg:flex items-center space-x-8">
           {navigation.map((item) => (
             <Link
-              key={item.name}
+              key={item.href}
               href={item.href}
               className={cn(
                 "relative px-3 py-2 text-sm font-medium transition-colors hover:text-primary",
                 pathname === item.href
                   ? "text-primary"
-                  : "text-muted-foreground"
+                  : "text-muted-foreground",
               )}
             >
               {item.name}
@@ -57,25 +56,21 @@ export function Navbar() {
                   layoutId="navbar-indicator"
                   className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
                   initial={false}
-                  transition={{
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 30,
-                  }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 />
               )}
             </Link>
           ))}
         </div>
 
-        {/* Actions Desktop */}
         <div className="hidden lg:flex items-center space-x-4">
+          <LanguageSwitcher />
           <ThemeSelector />
           <ThemeToggle />
         </div>
 
-        {/* Menu Mobile */}
         <div className="flex lg:hidden items-center space-x-2">
+          <LanguageSwitcher />
           <ThemeSelector />
           <ThemeToggle />
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -92,14 +87,14 @@ export function Navbar() {
               <div className="flex flex-col space-y-4 mt-8">
                 {navigation.map((item) => (
                   <Link
-                    key={item.name}
+                    key={item.href}
                     href={item.href}
                     onClick={() => setIsOpen(false)}
                     className={cn(
                       "block px-3 py-2 text-lg font-medium rounded-md transition-colors",
                       pathname === item.href
                         ? "text-primary bg-accent"
-                        : "text-muted-foreground hover:text-primary hover:bg-accent"
+                        : "text-muted-foreground hover:text-primary hover:bg-accent",
                     )}
                   >
                     {item.name}

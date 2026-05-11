@@ -1,0 +1,103 @@
+{
+  "Nav": {
+    "home": "Accueil",
+    "projects": "Projets",
+    "parcours": "Parcours",
+    "services": "Services",
+    "contact": "Contact"
+  },
+  "Home": {
+    "heroPrefix": "Développeur",
+    "heroHighlight": "Full Stack",
+    "heroSubtitle": "Développeur Full Stack expert en Next.js, React et TypeScript. Spécialisé dans la création d'applications web modernes et performantes.",
+    "ctaSeeProjects": "Voir mes projets",
+    "ctaContact": "Me contacter",
+    "downloadCv": "Téléchargez mon CV",
+    "downloadCvHere": "ici",
+    "statsProjectsLabel": "Projets réalisés",
+    "statsExperienceLabel": "Années d'expérience dev",
+    "statsEducationLabel": "Spécialisé dans le développement",
+    "statsCoffeeLabel": "Tasses de café",
+    "skillsTitle": "Mes Compétences",
+    "skillsSubtitle": "J'ai une gamme complète de compétences en développement web pour répondre à vos besoins.",
+    "skillsWebTitle": "Développement Web",
+    "skillsWebDesc": "Applications web modernes et performantes avec React, Next.js et TypeScript.",
+    "skillsPerfTitle": "Optimisation Performance",
+    "skillsPerfDesc": "Amélioration des performances et de l'expérience utilisateur de vos applications.",
+    "skillsApiTitle": "API & Backend",
+    "skillsApiDesc": "Développement d'APIs robustes et scalables avec Node.js et bases de données.",
+    "ctaHireTitle": "Prêt à m'embaucher dans votre équipe ?",
+    "ctaHireSubtitle": "Discutons en et créons ensemble quelque chose d'extraordinaire.",
+    "ctaHireButton": "Contactez-moi"
+  },
+  "Projects": {
+    "title": "Mes Projets",
+    "subtitle": "Découvrez une sélection de mes projets de développement web et applications.",
+    "featuredTitle": "Projets en vedette",
+    "featuredSubtitle": "Quelques-uns de mes projets les plus aboutis.",
+    "seeAll": "Voir tous les projets",
+    "filterAll": "Tous",
+    "viewProject": "Voir le projet",
+    "viewLive": "Voir en ligne",
+    "viewCode": "Code source",
+    "backToProjects": "Retour aux projets",
+    "client": "Client",
+    "date": "Date",
+    "duration": "Durée",
+    "category": "Catégorie",
+    "status": "Statut",
+    "technologies": "Technologies",
+    "features": "Fonctionnalités",
+    "otherProjects": "Autres projets"
+  },
+  "Parcours": {
+    "title": "Mon Parcours",
+    "subtitle": "Mon expérience professionnelle et ma formation académique.",
+    "experiences": "Expériences",
+    "educations": "Formations",
+    "skills": "Compétences",
+    "current": "En cours",
+    "to": "à"
+  },
+  "Services": {
+    "title": "Mes Services",
+    "subtitle": "Découvrez les services que je propose pour donner vie à vos projets.",
+    "from": "À partir de",
+    "contactCta": "Me contacter"
+  },
+  "Contact": {
+    "title": "Me contacter",
+    "subtitle": "N'hésitez pas à me contacter pour discuter de votre projet.",
+    "email": "Email",
+    "phone": "Téléphone",
+    "location": "Localisation",
+    "availability": "Disponibilité",
+    "responseTime": "Temps de réponse",
+    "form": {
+      "name": "Nom",
+      "email": "Email",
+      "subject": "Sujet",
+      "message": "Message",
+      "send": "Envoyer",
+      "sending": "Envoi en cours…",
+      "success": "Message envoyé, merci !",
+      "error": "Une erreur est survenue. Réessaie."
+    }
+  },
+  "Footer": {
+    "rights": "Tous droits réservés.",
+    "madeWith": "Fait avec"
+  },
+  "Common": {
+    "language": "Langue",
+    "switchToEnglish": "English",
+    "switchToFrench": "Français"
+  },
+  "Theme": {
+    "toggle": "Basculer le thème",
+    "label": "Thème",
+    "default": "Défaut",
+    "defaultDesc": "Thème par défaut",
+    "noCustom": "Aucun thème personnalisé trouvé"
+  }
+}
